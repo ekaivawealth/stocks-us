@@ -241,7 +241,7 @@ def render_html(recs, date_str, gen_str):
   .qbox{{margin:20px 0;border-radius:8px;overflow:hidden}}
   .qbox h2{{background:var(--green);color:white;padding:14px 20px;font-size:15px;display:flex;justify-content:space-between;align-items:center}}
   .qbox h2[style*="orange"]{{background:var(--orange)}}
-  .qbody{{max-height:330px;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:0}}
+  .qbody{{max-height:330px;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:0}}
   .qrow{{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);cursor:pointer}}
   .qrow:hover{{background:#faf7f2}}.qrow .nm{{flex:1;min-width:0;overflow:hidden}}
   .qrow .sy{{font-weight:800;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
@@ -279,7 +279,7 @@ def render_html(recs, date_str, gen_str):
   <div style="flex:1"></div>
   <button class="btn active" onclick="cap=null;renderAll()">All stocks</button>
   <button class="btn" onclick="cap='Nasdaq-100';renderAll()">Nasdaq-100</button>
-  <button class="btn" onclick="cap='SP500';renderAll()">S&P 500</button>
+  <button class="btn" onclick="cap='S&P 500';renderAll()">S&P 500</button>
   <div style="flex:1"></div>
  </div>
 
@@ -352,7 +352,7 @@ if __name__ == "__main__":
     recs = []
     for sym in US_TICKERS:
         if sym in prices.columns:
-            cap = "Nasdaq-100" if sym in NASDAQ_100 else "SP500"
+            cap = "Nasdaq-100" if sym in NASDAQ_100 else "S&P 500"
             name = f"{sym} Inc."
             rec = analyze(sym, name, prices[sym])
             if rec:
