@@ -152,8 +152,7 @@ def analyze(symbol, name, prices):
     if len(wk) < 2: return None
     wk_df = pd.DataFrame({"close": wk})
     wk_df["wema100"] = wk_df["close"].ewm(span=100, adjust=False).mean()
-    wk_df["score"] = wk_df["close"].apply(
-        lambda c: sum(1 for p in EMAS if c > df.loc[df["close"].idxmax()] if df["close"].idxmax() else 0))
+    wk_df["score"] = (wk_df["close"] > wk_df["wema100"]).astype(int) * 6  # simplified: 6 if above 100-EMA, 0 if below
 
     # Qualified today
     last = df.iloc[-1]
