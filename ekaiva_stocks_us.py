@@ -311,10 +311,13 @@ def render_html(recs, date_str, gen_str):
   function ccard(d){{return `<div class="qrow" onclick="openModal('${{d.sym}}')"><span class="pill ${{d.cap==='Nasdaq-100'?'mid':'large'}}">${{d.cap==='Nasdaq-100'?'N':'S'}}</span>
    <span class="nm"><div class="sy">${{d.sym}}${{thin(d)}}</div><div class="cn">${{d.name}}</div></span>
    <span style="text-align:right;min-width:86px;flex-shrink:0;white-space:nowrap"><div class="sy" style="font-size:12px">${{fmt(d.close)}}</div>
-   <div class="cn" style="color:${{d.chg>=0?'#1f9d3a':'#c0392b'}}">${{d.chg>=0?'+':''}}${{d.chg.toFixed(2)}}%</div></span>${{scoreBar(d.score)}}</div>`}}
+   <div class="cn" style="color:${{d.chg>=0?'#1f9d3a':'#c0392b'}}">${{d.chg>=0?'+':''}}${{d.chg.toFixed(2)}}%</div></span>
+   <span style="min-width:55px;text-align:right;font-weight:800;font-size:13px;color:var(--dark)">${{d.score}}/6</span>
+   ${{{scoreBar(d.score)}}}</div>`}}
+  function updateCapButtons(){{document.querySelectorAll('.btn').forEach(b=>b.classList.remove('active'));if(cap===null)document.querySelectorAll('.btn')[0].classList.add('active');else if(cap==='Nasdaq-100')document.querySelectorAll('.btn')[1].classList.add('active');else document.querySelectorAll('.btn')[2].classList.add('active')}}
   function renderCrossed(){{const v=view();const c=v.filter(d=>d.crossed).sort((a,b)=>b.score-a.score||a.sym.localeCompare(b.sym));document.getElementById('ccount').textContent=c.length+' stock'+(c.length===1?'':'s');document.getElementById('cbody').innerHTML=c.length?c.map(ccard).join(''):'<div class="qrow"><span class="cn">No new crossovers today.</span></div>'}}
   function renderQualified(){{const v=view();const q=v.filter(d=>d.qual).sort((a,b)=>b.score-a.score||a.sym.localeCompare(b.sym));document.getElementById('qcount').textContent=q.length+' stock'+(q.length===1?'':'s');document.getElementById('qbody').innerHTML=q.length?q.map(ccard).join(''):'<div class="qrow"><span class="cn">No qualified stocks.</span></div>'}}
-  function renderAll(){{renderTiles();renderCrossed();renderQualified()}}
+  function renderAll(){{renderTiles();renderCrossed();renderQualified();updateCapButtons()}}
   function openModal(sym){{const d=ALL.find(x=>x.sym===sym);if(!d)return;document.getElementById('mTitle').textContent=d.sym+' · '+d.name;
    document.getElementById('mSub').innerHTML=`${{d.cap}} · Today ${{d.score}}/6 · Close ${{fmt(d.close)}} · D>100 ${{d.d100?'✓':'✗'}} · W>100 ${{d.w100?'✓':'✗'}}`;
    const order=[5,10,20,50,100,200];
