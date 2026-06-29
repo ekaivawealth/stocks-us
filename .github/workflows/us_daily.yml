@@ -1,0 +1,27 @@
+name: Ekaiva US Stocks Daily
+
+on:
+  schedule:
+    - cron: "0 20 * * 1-5"     # 20:00 UTC = 4:00 PM EDT / 3:00 PM EST, Mon-Fri
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install yfinance pandas openpyxl pyarrow
+      - run: python ekaiva_stocks_us.py
+      - name: Save results back to the repo
+        run: |
+          git config user.name  "ekaiva-bot-us"
+          git config user.email "actions@github.com"
+          git add -A
+          git commit -m "US Daily update $(date -u +%F)" || echo "no changes"
+          git push || echo "push skipped"
